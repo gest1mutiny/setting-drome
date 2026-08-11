@@ -1,48 +1,107 @@
-name: 📡 Mutiny TV - Nodo Cocina v1.0
+name: 📡 Mutiny TV Nginx Invisible Proxy Engine v800.0
 
 on:
-  workflow_dispatch:
+  workflow_dispatch: # Botón manual de PLAY en la web de GitHub
 
 jobs:
-  processing:
+  streaming:
     runs-on: ubuntu-latest
     steps:
       - name: 🗄️ Clonando el búnker de archivos estáticos
         uses: actions/checkout@v4
 
-      - name: ⚙️ Instalando FFmpeg nativo por hardware
-        run: sudo apt-get update && sudo apt-get install -y ffmpeg fonts-dejavu-core curl jq
-
-      - name: 🚀 Cocinando el Video Útil y Eyectando al Satélite
+      - name: ⚙️ Instalando Servidor de Medios Nginx RTMP Industrial
         run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg fonts-dejavu-core curl jq nginx libnginx-mod-rtmp
+
+      - name: 🚀 Detonando la Central de Emisión por Aislamiento de Flujo Local 24/7
+        run: |
+          # 🪓 [REACTOR CENTRAL INDUSTRIAL v800.0 - DIEGO LOCAL PROXY COMPACT]
           export TERM=xterm
+          
+          # ESCUDO DE TEXTOS MUDE INITIAL
           echo "Cargando..." > letrero.txt
           echo "Cargando informis Mutiny..." > abajo.txt
           
-          # Hilos de marquesinas dinámicas en background
+          # 🧱 [PASO 1]: CONFIGURAR EL EMBUDO INTERNO NGINX RTMP EN LA RAM DE LA ACTIONS
+          sudo tee /etc/nginx/nginx.conf << 'EOF'
+          load_module modules/ngx_rtmp_module.so;
+          user root;
+          worker_processes auto;
+          pid /run/nginx.pid;
+          events { worker_connections 768; }
+          rtmp {
+              server {
+                  listen 1935;
+                  chunk_size 4096;
+                  application receptor {
+                      live on;
+                      record off;
+                  }
+              }
+          }
+          EOF
+          
+          # Encendemos el servidor Nginx de forma binaria directa libre de systemctl
+          sudo nginx -c /etc/nginx/nginx.conf
+          sleep 2
           URL_GIST_TEXTO="https://gist.githubusercontent.com/jav45dev-ctrl/c02c7fac36fde342f061b733231a5e6d/raw/anuncio.txt"
           URL_GIST_NOTICIAS="https://gist.githubusercontent.com/jav45dev-ctrl/c02c7fac36fde342f061b733231a5e6d/raw/noticias.txt"
 
+          # Hilos de marquesinas dinámicas en background (Volaron los banners pesados Surge)
           while true; do curl -s "$URL_GIST_TEXTO" | head -n 1 | tr -d '\r\n' > letrero.txt; sleep 4; done &
           while true; do curl -s "$URL_GIST_NOTICIAS" | head -n 1 | tr -d '\r\n' > abajo.txt; sleep 5; done &
 
-          # Bucle infinito que lee la playlist y salta de capítulo solo en background sin apagar el satélite
+          # =========================================================================
+          # 🧱 [PROCESO A - EL PROCESADOR INTERNO]: CAMUFLADO EN EL SÓTANO (Background &)
+          # =========================================================================
+          (
+          echo "1" > linea_actual.txt
           while true; do
             curl -s "https://gist.githubusercontent.com/jav45dev-ctrl/c02c7fac36fde342f061b733231a5e6d/raw/playlist.txt" | tr -d '\r' | sed '/^$/d' > grilla_local.txt
-            URL_PIRATA=$(sed -n "1p" grilla_local.txt | tr -d ' ')
+            NUM_LINEA=$(cat linea_actual.txt)
+            URL_PIRATA=$(sed -n "${NUM_LINEA}p" grilla_local.txt | tr -d ' ')
 
-            # 🪓 RE ENLACE DIRECTO: Mandamos el video unificado procesado hacia la Cuenta B de GitHub.
-            # Cambiá strictly la muga de "IP_DE_LA_CUENTA_B" por el túnel que nos dé el segundo robot mañana.
+            if [ -z "$URL_PIRATA" ]; then
+              echo "🔄 Fin de cartelera de hoy. Pegando la vuelta al Renglón 1..." >&2
+              echo "1" > linea_actual.txt; sleep 5; continue
+            fi
+
+            echo "📥 [SÓTANO] PROCESANDO Y EMPAQUETANDO CAPÍTULO NÚMERO: $NUM_LINEA" >&2
+            # Chupa de Redworld/Pixeldrain con paraguas de reconexión infinita.
+            # Procesa tus filtros en background a pantalla completa expandida y aplana el audio a estéreo.
+            # Escupe el flujo unificado empaquetado adentro de la aduana de Nginx local.
             ffmpeg -y -headers "User-Agent: VLC/3.0.18 LibVLC/3.0.18" \
             -reconnect 1 -reconnect_at_eof 1 -reconnect_streamed 1 -reconnect_delay_max 5 \
             -re -i "$URL_PIRATA" -re -loop 1 -i plantilla_horizontal.png \
-            -filter_complex "[0:v]scale=1280:720,crop=1270:710:5:5,eq=contrast=1.12:brightness=0.02[peli_expandida]; \
+            -filter_complex "[0:v]scale=1280:720,crop=1270:710:5:5,eq=contrast=1.12:brightness=0.02,rotate=0.012:ow=1280:oh=720:fillcolor=black[peli_mutada]; \
                              [1:v]scale=1280:720[fondo_base]; \
-                             [fondo_base][peli_expandida]overlay=0:0:shortest=0[canvas_parcial]; \
+                             [fondo_base][peli_mutada]overlay=0:0:shortest=0[canvas_parcial]; \
                              [canvas_parcial]drawtext=textfile=letrero.txt:reload=1:x=30:y=25:fontsize=24:fontcolor=0x00e676:fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:box=1:boxcolor=black@0.6:boxborderw=5,\
                                               drawtext=textfile=abajo.txt:reload=1:x=30:y=665:fontsize=24:fontcolor=0x00e676:fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:box=1:boxcolor=black@0.5:boxborderw=4[canvas_fusionado]" \
             -r 30 -g 60 -keyint_min 60 -map 0:a? -map "[canvas_fusionado]" -sn -dn -pix_fmt yuv420p \
             -c:v libx264 -preset ultrafast -tune zerolatency -b:v 2500k -maxrate 2500k -bufsize 12000k \
-            -c:a aac -b:a 128k -ac 2 -ar 44100 -f flv rtmp://admin.localhost.run/vivo/stream_diego || true
+            -c:a aac -b:a 128k -ac 2 -ar 44100 -f flv rtmp://localhost:1935/receptor/stream_diego || true
+            
+            echo "🏁 Fin de bloque detectado en el sótano. Pasando de renglón..." >&2
+            echo "$((NUM_LINEA + 1))" > linea_actual.txt
             sleep 4
           done
+          ) &
+
+          # Le damos strictly 15 segundos sordos de reloj para forzar que la Fase A
+          # abra el grifo de red y llene los primeros Megabytes de la cañería de Nginx en la RAM.
+          sleep 15
+
+          # =========================================================================
+          # 🧱 [PROCESO B - EL CAPATAZ EMISOR FIJO]: NO SABE DE INTERNET (Foreground)
+          # =========================================================================
+          echo "📡 [EMISOR GENERAL] ABRIENDO COMPUERTA RTMP TITANIO CON KICK..."
+          # Chupa de la cañería local interna Nginx de forma elástica (-stream_loop -1).
+          # No procesa filtros, no gasta CPU. Su única función es sostener la Stream Key viva 24/7.
+          # -g 60 -keyint_min 60 clava los Keyframes en 2 segundos rígidos barriendo las advertencias.
+          ffmpeg -y -fflags +genpts+igndts+nofillin -stream_loop -1 -i rtmp://localhost:1935/receptor/stream_diego \
+          -r 30 -g 60 -keyint_min 60 -pix_fmt yuv420p \
+          -c:v copy -c:a copy -f flv \
+          "rtmps://fa723fc1b171.global-contribute.live-video.net/app/sk_us-west-2_yb6F1b18xTEE_QpaA7pm407C0FAAGgZPTqZHvtIJM2Q"
