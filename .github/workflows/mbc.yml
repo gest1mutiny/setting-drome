@@ -1,4 +1,4 @@
-name: 📡 Mutiny TV IPTV Pirate Engine v615.0
+name: 📡 Mutiny TV IPTV Pirate Engine v615.0 - Adelantado
 
 on:
   workflow_dispatch: # Botón manual de PLAY en la web de GitHub
@@ -17,7 +17,7 @@ jobs:
 
       - name: 🚀 Emisión Directa Unificada con Salto de Grilla Automático Indestructible
         run: |
-          # 🪓 [REACTOR CENTRAL INDUSTRIAL v615.0 - DIEGO CLOCKWORK MARATHON PURIST FIXED]
+          # 🪓 [REACTOR CENTRAL INDUSTRIAL v615.0 - DIEGO ADELANTO EXPRESS MINUTO 30]
           export TERM=xterm
           
           # ESCUDO DE TEXTOS MUDE INITIAL
@@ -50,12 +50,11 @@ jobs:
             echo "🍿 [MUTINY] REPRODUCIENDO RENGLÓN DE GRILLA NÚMERO: $NUM_LINEA"
             echo "🎬 Link: $URL_PIRATA"
 
-            # 🪓 [REPARADO DEFINITIVO v615.0]: Le agregamos el -xerror y -ss 0 para forzar el cierre violento
-            # del comando en cuanto el video de Redworld deje de mandar tramas limpias.
-            # El overlay=0:0:shortest=1 guillotina el filtro gráfico y Bash salta al renglón 2 en 3 segundos sordos.
+            # 🪓 [REPARADO EXPRESS LÍNEA 56]: Metimos -ss 00:30:00 clavado justo antes de la entrada del video.
+            # Salta la primera media hora por hardware y abre el vivo al Segundo 1 directo en Kick.
             ffmpeg -y -headers "User-Agent: VLC/3.0.18 LibVLC/3.0.18" \
             -reconnect 1 -reconnect_at_eof 1 -reconnect_streamed 1 -reconnect_delay_max 5 \
-            -fflags +genpts+igndts+flush_packets+discardcorrupt+nofillin -xerror -re -i "$URL_PIRATA" -re -loop 1 -i plantilla_horizontal.png \
+            -fflags +genpts+igndts+flush_packets+discardcorrupt+nofillin -xerror -ss 00:30:00 -re -i "$URL_PIRATA" -re -loop 1 -i plantilla_horizontal.png \
             -filter_complex "[0:v]scale=1280:720,crop=1270:710:5:5,eq=contrast=1.12:brightness=0.02,rotate=0.012:ow=1280:oh=720:fillcolor=black[peli_expandida]; \
                              [1:v]scale=1280:720[fondo_base]; \
                              [fondo_base][peli_expandida]overlay=0:0:shortest=1[canvas_parcial]; \
