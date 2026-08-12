@@ -55,7 +55,7 @@ jobs:
 
             ffmpeg -y -headers "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" \
             -block_size 262144 -reconnect 1 -reconnect_at_eof 1 -reconnect_streamed 1 -reconnect_delay_max 5 \
-            -ss 00:10:00 -re -i "$URL_PIRATA" -re -loop 1 -i plantilla_horizontal.png \
+            -ss 00:00:00 -re -i "$URL_PIRATA" -re -loop 1 -i plantilla_horizontal.png \
 
             -filter_complex "[0:v]scale=1280:720,crop=1270:710:5:5,eq=contrast=1.12:brightness=0.02,rotate=0.012:ow=1280:oh=720:fillcolor=black[peli_expandida]; \
                              [1:v]scale=1280:720[fondo_base]; \
