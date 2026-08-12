@@ -1,4 +1,4 @@
-name: 📡 Mutiny TV IPTV Pirate Engine v610.2
+name: 📡 Mutiny TV IPTV Pirate Engine v610.1
 
 on:
   workflow_dispatch: # Botón manual de PLAY en la web de GitHub
@@ -17,7 +17,7 @@ jobs:
 
       - name: 🚀 Emisión Directa Unificada con Salto de Grilla Automático a Kick
         run: |
-          # 🪓 [REACTOR CENTRAL INDUSTRIAL v610.2 - DIEGO CLOCKWORK PIXELDRAIN SHIELD]
+          # 🪓 [REACTOR CENTRAL INDUSTRIAL v610.1 - DIEGO CLOCKWORK MARATHON PURIST FIXED]
           export TERM=xterm
           
           # ESCUDO DE TEXTOS MUDE INITIAL
@@ -36,9 +36,11 @@ jobs:
 
           echo "📡 [MUTINY TV] ENCIENDIENDO CAÑO MAESTRO DE EMISIÓN DE LARGO FLUIDO..."
           
-          # 🧠 TU JUGADA MAESTRA BIÓNICA FINAL BURLA-FIREWALLS:
-          # Mutamos las cabeceras a Mozilla Chrome estándar. Inyectamos -block_size 262144 para que la lectura
-          # en la RAM sea discontinua y el robot de Pixeldrain no te detecte como bot anti-leech, barriendo el Bus error.
+          # 🧠 TU JUGADA MAESTRA BIÓNICA FINAL:
+          # Un solo ffmpeg al frente libre de Nginx. Mantiene speed=1.0x rígidos de relojito.
+          # Forzamos +flush_packets e ignoramos baches de sincronismo herciano al final del metraje.
+          # Cuando el video termina, el filtro se destruye de inmediato por el shortest=1, el comando muere sano,
+          # el lazo de Bash salta al Renglón 2 y Kick sostiene la vida en línea por el colchón elástico del bufsize.
           while true; do
             curl -s "https://gist.githubusercontent.com/jav45dev-ctrl/c02c7fac36fde342f061b733231a5e6d/raw/playlist.txt" | tr -d '\r' | sed '/^$/d' > grilla_local.txt
             NUM_LINEA=$(cat linea_actual.txt)
@@ -53,13 +55,12 @@ jobs:
             echo "🍿 [MUTINY] REPRODUCIENDO RENGLÓN DE GRILLA NÚMERO: $NUM_LINEA"
             echo "🎬 Link: $URL_PIRATA"
 
-            ffmpeg -y -headers "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" \
-            -block_size 262144 -reconnect 1 -reconnect_at_eof 1 -reconnect_streamed 1 -reconnect_delay_max 5 \
-            -ss 00:00:00 -re -i "$URL_PIRATA" -re -loop 1 -i plantilla_horizontal.png \
-
+            ffmpeg -y -headers "User-Agent: VLC/3.0.18 LibVLC/3.0.18" \
+            -reconnect 1 -reconnect_at_eof 1 -reconnect_streamed 1 -reconnect_delay_max 5 \
+            -fflags +genpts+igndts+flush_packets+nofillin -re -i "$URL_PIRATA" -loop 1 -i plantilla_horizontal.png \
             -filter_complex "[0:v]scale=1280:720,crop=1270:710:5:5,eq=contrast=1.12:brightness=0.02,rotate=0.012:ow=1280:oh=720:fillcolor=black[peli_expandida]; \
                              [1:v]scale=1280:720[fondo_base]; \
-                             [fondo_base][peli_expandida]overlay=0:0:shortest=0[canvas_parcial]; \
+                             [fondo_base][peli_expandida]overlay=0:0:shortest=1[canvas_parcial]; \
                              [canvas_parcial]drawtext=textfile=letrero.txt:reload=1:x=30:y=25:fontsize=24:fontcolor=0x00e676:fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:box=1:boxcolor=black@0.6:boxborderw=5,\
                                               drawtext=textfile=abajo.txt:reload=1:x=30:y=665:fontsize=24:fontcolor=0x00e676:fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:box=1:boxcolor=black@0.5:boxborderw=4[canvas_fusionado]" \
             -r 30 -g 60 -keyint_min 60 -map 0:a? -map "[canvas_fusionado]" -sn -dn -pix_fmt yuv420p \
@@ -69,5 +70,5 @@ jobs:
 
             echo "🏁 Transición de bloque detectada. Saltando de renglón..."
             echo "$((NUM_LINEA + 1))" > linea_actual.txt
-            sleep 4
+            sleep 3
           done
