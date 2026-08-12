@@ -1,4 +1,4 @@
-name: 📡 Mutiny TV IPTV Pirate Engine v610.1
+name: 📡 Mutiny TV IPTV Pirate Engine v615.0
 
 on:
   workflow_dispatch: # Botón manual de PLAY en la web de GitHub
@@ -15,9 +15,9 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y ffmpeg fonts-dejavu-core curl jq
 
-      - name: 🚀 Emisión Directa Unificada con Salto de Grilla Automático a Kick
+      - name: 🚀 Emisión Directa Unificada con Salto de Grilla Automático Indestructible
         run: |
-          # 🪓 [REACTOR CENTRAL INDUSTRIAL v610.1 - DIEGO CLOCKWORK MARATHON PURIST FIXED]
+          # 🪓 [REACTOR CENTRAL INDUSTRIAL v615.0 - DIEGO CLOCKWORK MARATHON PURIST FIXED]
           export TERM=xterm
           
           # ESCUDO DE TEXTOS MUDE INITIAL
@@ -36,11 +36,6 @@ jobs:
 
           echo "📡 [MUTINY TV] ENCIENDIENDO CAÑO MAESTRO DE EMISIÓN DE LARGO FLUIDO..."
           
-          # 🧠 TU JUGADA MAESTRA BIÓNICA FINAL:
-          # Un solo ffmpeg al frente libre de Nginx. Mantiene speed=1.0x rígidos de relojito.
-          # Forzamos +flush_packets e ignoramos baches de sincronismo herciano al final del metraje.
-          # Cuando el video termina, el filtro se destruye de inmediato por el shortest=1, el comando muere sano,
-          # el lazo de Bash salta al Renglón 2 y Kick sostiene la vida en línea por el colchón elástico del bufsize.
           while true; do
             curl -s "https://gist.githubusercontent.com/jav45dev-ctrl/c02c7fac36fde342f061b733231a5e6d/raw/playlist.txt" | tr -d '\r' | sed '/^$/d' > grilla_local.txt
             NUM_LINEA=$(cat linea_actual.txt)
@@ -55,9 +50,12 @@ jobs:
             echo "🍿 [MUTINY] REPRODUCIENDO RENGLÓN DE GRILLA NÚMERO: $NUM_LINEA"
             echo "🎬 Link: $URL_PIRATA"
 
+            # 🪓 [REPARADO DEFINITIVO v615.0]: Le agregamos el -xerror y -ss 0 para forzar el cierre violento
+            # del comando en cuanto el video de Redworld deje de mandar tramas limpias.
+            # El overlay=0:0:shortest=1 guillotina el filtro gráfico y Bash salta al renglón 2 en 3 segundos sordos.
             ffmpeg -y -headers "User-Agent: VLC/3.0.18 LibVLC/3.0.18" \
             -reconnect 1 -reconnect_at_eof 1 -reconnect_streamed 1 -reconnect_delay_max 5 \
-            -fflags +genpts+igndts+flush_packets+nofillin -re -i "$URL_PIRATA" -loop 1 -i plantilla_horizontal.png \
+            -fflags +genpts+igndts+flush_packets+discardcorrupt+nofillin -xerror -re -i "$URL_PIRATA" -re -loop 1 -i plantilla_horizontal.png \
             -filter_complex "[0:v]scale=1280:720,crop=1270:710:5:5,eq=contrast=1.12:brightness=0.02,rotate=0.012:ow=1280:oh=720:fillcolor=black[peli_expandida]; \
                              [1:v]scale=1280:720[fondo_base]; \
                              [fondo_base][peli_expandida]overlay=0:0:shortest=1[canvas_parcial]; \
