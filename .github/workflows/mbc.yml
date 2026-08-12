@@ -64,7 +64,7 @@ jobs:
             -r 30 -g 60 -keyint_min 60 -map 0:a? -map "[canvas_fusionado]" -sn -dn -pix_fmt yuv420p \
             -c:v libx264 -preset ultrafast -tune zerolatency -b:v 2500k -maxrate 2500k -bufsize 12000k \
             -c:a aac -b:a 128k -ac 2 -ar 44100 -f flv \
-            "http://TU_URL_DE_LOCALHOST_RUN/live.flv" || true
+           "tcp://a27d7dd6e3cb97.lhr.life:80" || true
 
             echo "🏁 Transición de bloque detectada. Saltando de renglón..."
             echo "$((NUM_LINEA + 1))" > linea_actual.txt
