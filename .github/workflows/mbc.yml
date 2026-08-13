@@ -1,4 +1,4 @@
-name: 📡 Mutiny TV IPTV Pirate Engine v615.0 - Adelantado
+name: 📡 Mutiny TV IPTV Pirate Engine v615.1 - Adelantado Sincro
 
 on:
   workflow_dispatch: # Botón manual de PLAY en la web de GitHub
@@ -17,7 +17,7 @@ jobs:
 
       - name: 🚀 Emisión Directa Unificada con Salto de Grilla Automático Indestructible
         run: |
-          # 🪓 [REACTOR CENTRAL INDUSTRIAL v615.0 - DIEGO ADELANTO EXPRESS MINUTO 30]
+          # 🪓 [REACTOR CENTRAL INDUSTRIAL v615.1 - DIEGO SINCRO ADELANTO MINUTO 30]
           export TERM=xterm
           
           # ESCUDO DE TEXTOS MUDE INITIAL
@@ -27,7 +27,7 @@ jobs:
           URL_GIST_TEXTO="https://gist.githubusercontent.com/jav45dev-ctrl/c02c7fac36fde342f061b733231a5e6d/raw/anuncio.txt"
           URL_GIST_NOTICIAS="https://gist.githubusercontent.com/jav45dev-ctrl/c02c7fac36fde342f061b733231a5e6d/raw/noticias.txt"
 
-          # Hilos de marquesinas dinámicas en background (Volaron los banners pesados Surge de la derecha)
+          # Hilos de marquesinas dinámicas en background (Volaron los banners pesados)
           while true; do curl -s "$URL_GIST_TEXTO" | head -n 1 | tr -d '\r\n' > letrero.txt; sleep 4; done &
           while true; do curl -s "$URL_GIST_NOTICIAS" | head -n 1 | tr -d '\r\n' > abajo.txt; sleep 5; done &
 
@@ -50,11 +50,11 @@ jobs:
             echo "🍿 [MUTINY] REPRODUCIENDO RENGLÓN DE GRILLA NÚMERO: $NUM_LINEA"
             echo "🎬 Link: $URL_PIRATA"
 
-            # 🪓 [REPARADO EXPRESS LÍNEA 56]: Metimos -ss 00:30:00 clavado justo antes de la entrada del video.
-            # Salta la primera media hora por hardware y abre el vivo al Segundo 1 directo en Kick.
-            ffmpeg -y -headers "User-Agent: VLC/3.0.18 LibVLC/3.0.18" \
+            # 🪓 [REPARADO DEFINITIVO v615.1]: Clavamos el -ss 00:30:00 como la primera directiva global del comando.
+            # Adelanta el reloj entero del sistema en la RAM, logrando la fusión perfecta a 30 FPS rígidos.
+            ffmpeg -y -ss 00:30:00 -headers "User-Agent: VLC/3.0.18 LibVLC/3.0.18" \
             -reconnect 1 -reconnect_at_eof 1 -reconnect_streamed 1 -reconnect_delay_max 5 \
-            -fflags +genpts+igndts+flush_packets+discardcorrupt+nofillin -xerror -ss 00:30:00 -re -i "$URL_PIRATA" -re -loop 1 -i plantilla_horizontal.png \
+            -fflags +genpts+igndts+flush_packets+discardcorrupt+nofillin -xerror -re -i "$URL_PIRATA" -re -loop 1 -i plantilla_horizontal.png \
             -filter_complex "[0:v]scale=1280:720,crop=1270:710:5:5,eq=contrast=1.12:brightness=0.02,rotate=0.012:ow=1280:oh=720:fillcolor=black[peli_expandida]; \
                              [1:v]scale=1280:720[fondo_base]; \
                              [fondo_base][peli_expandida]overlay=0:0:shortest=1[canvas_parcial]; \
@@ -69,3 +69,5 @@ jobs:
             echo "$((NUM_LINEA + 1))" > linea_actual.txt
             sleep 3
           done
+
+       
