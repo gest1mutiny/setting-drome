@@ -1,4 +1,4 @@
-name: 📡 Mutiny TV IPTV Pirate Engine v615.0
+name: 📡 Mutiny TV IPTV Engine v155.2 - Classic Tracker Fixed
 
 on:
   workflow_dispatch: # Botón manual de PLAY en la web de GitHub
@@ -10,63 +10,65 @@ jobs:
       - name: 🗄️ Clonando el búnker de archivos estáticos
         uses: actions/checkout@v4
 
-      - name: ⚙️ Instalando FFmpeg nativo por hardware en la nube
+      - name: ⚙️ Instalando Entorno Gráfico Virtual Invisible y FFmpeg Premium
         run: |
           sudo apt-get update
-          sudo apt-get install -y ffmpeg fonts-dejavu-core curl jq
+          sudo apt-get install -y ffmpeg fonts-dejavu-core curl xvfb mpv alsa-utils
 
-      - name: 🚀 Emisión Directa Unificada con Salto de Grilla Automático Indestructible
+      - name: 🚀 Detonando la Central Sincrónica Multi-Formato con Rastreo Continuo
         run: |
-          # 🪓 [REACTOR CENTRAL INDUSTRIAL v615.0 - DIEGO CLOCKWORK MARATHON PURIST FIXED]
+          # 🪓 [REACTOR INDUSTRIAL CLASSIC v155.2 - DIEGO REAL TIME RESCUE MASTER]
           export TERM=xterm
           
           # ESCUDO DE TEXTOS MUDE INITIAL
           echo "Cargando..." > letrero.txt
           echo "Cargando informis Mutiny..." > abajo.txt
           
+          # Levantamos el driver del sonido digital interno de la RAM de Microsoft
+          sudo modprobe snd-dummy
+          
+          # TUS DOS GIST REALES DE TEXTO (Modificables desde el celular horizontal)
           URL_GIST_TEXTO="https://gist.githubusercontent.com/jav45dev-ctrl/c02c7fac36fde342f061b733231a5e6d/raw/anuncio.txt"
           URL_GIST_NOTICIAS="https://gist.githubusercontent.com/jav45dev-ctrl/c02c7fac36fde342f061b733231a5e6d/raw/noticias.txt"
-
-          # Hilos de marquesinas dinámicas en background (Volaron los banners pesados Surge de la derecha)
+          # Hilos secundarios de marquesinas dinámicas en background
           while true; do curl -s "$URL_GIST_TEXTO" | head -n 1 | tr -d '\r\n' > letrero.txt; sleep 4; done &
           while true; do curl -s "$URL_GIST_NOTICIAS" | head -n 1 | tr -d '\r\n' > abajo.txt; sleep 5; done &
 
-          # 🧱 [EL SEGURO DE LA MARATÓN]: Inicializamos el contador de fila india
-          echo "1" > linea_actual.txt
+          # =========================================================================
+          # 🖥️ OPERARIO 1: EL MONITOR INVISIBLE EN LA RAM (Xvfb)
+          # =========================================================================
+          Xvfb :99 -screen 0 1280x720x24 > /dev/null 2>&1 &
+          export DISPLAY=:99
+          sleep 2
 
-          echo "📡 [MUTINY TV] ENCIENDIENDO CAÑO MAESTRO DE EMISIÓN DE LARGO FLUIDO..."
-          
-          while true; do
-            curl -s "https://gist.githubusercontent.com/jav45dev-ctrl/c02c7fac36fde342f061b733231a5e6d/raw/playlist.txt" | tr -d '\r' | sed '/^$/d' > grilla_local.txt
-            NUM_LINEA=$(cat linea_actual.txt)
-            URL_PIRATA=$(sed -n "${NUM_LINEA}p" grilla_local.txt | tr -d ' ')
+          # =========================================================================
+          # 🍿 OPERARIO 2: REPRODUCTOR CLÁSICO CON MEMORIA DE TIEMPO RÍGIDA (MPV)
+          # =========================================================================
+          # --save-position-on-quit=yes graba el segundo exacto en la RAM de la Actions.
+          # --keep-open=yes frena los saltos locos de renglón si internet mete un bache largo.
+          # Sostiene la lona quieta al aire y reanuda en el mismo fotograma al volver la señal.
+          mpv --playlist="https://gist.githubusercontent.com/jav45dev-ctrl/c02c7fac36fde342f061b733231a5e6d/raw/playlist.txt" \
+              --loop-playlist=inf --geometry=1280x660+0+30 --no-border --ontop --osc=no \
+              --cache=yes --demuxer-max-bytes=500M --demuxer-max-back-bytes=50M --demuxer-readahead-secs=45 \
+              --aid=1 --audio-channels=stereo --ytdl=no --network-timeout=10 \
+              --save-position-on-quit=yes --watch-later-options=start --keep-open=yes \
+              --user-agent="VLC/3.0.18 LibVLC/3.0.18" > /dev/null 2>&1 &
+          sleep 6
 
-            if [ -z "$URL_PIRATA" ]; then
-              echo "🔄 Fin de la cartelera de hoy. Pegando la vuelta al Renglón 1..."
-              echo "1" > linea_actual.txt
-              sleep 5; continue
-            fi
-
-            echo "🍿 [MUTINY] REPRODUCIENDO RENGLÓN DE GRILLA NÚMERO: $NUM_LINEA"
-            echo "🎬 Link: $URL_PIRATA"
-
-            # 🪓 [REPARADO DEFINITIVO v615.0]: Le agregamos el -xerror y -ss 0 para forzar el cierre violento
-            # del comando en cuanto el video de Redworld deje de mandar tramas limpias.
-            # El overlay=0:0:shortest=1 guillotina el filtro gráfico y Bash salta al renglón 2 en 3 segundos sordos.
-            ffmpeg -y -headers "User-Agent: VLC/3.0.18 LibVLC/3.0.18" \
-            -reconnect 1 -reconnect_at_eof 1 -reconnect_streamed 1 -reconnect_delay_max 5 \
-            -fflags +genpts+igndts+flush_packets+discardcorrupt+nofillin -xerror -re -i "$URL_PIRATA" -re -loop 1 -i plantilla_horizontal.png \
-            -filter_complex "[0:v]scale=1280:720,crop=1270:710:5:5,eq=contrast=1.12:brightness=0.02,rotate=0.012:ow=1280:oh=720:fillcolor=black[peli_expandida]; \
-                             [1:v]scale=1280:720[fondo_base]; \
-                             [fondo_base][peli_expandida]overlay=0:0:shortest=1[canvas_parcial]; \
-                             [canvas_parcial]drawtext=textfile=letrero.txt:reload=1:x=30:y=25:fontsize=24:fontcolor=0x00e676:fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:box=1:boxcolor=black@0.6:boxborderw=5,\
-                                              drawtext=textfile=abajo.txt:reload=1:x=30:y=665:fontsize=24:fontcolor=0x00e676:fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:box=1:boxcolor=black@0.5:boxborderw=4[canvas_fusionado]" \
-            -r 30 -g 60 -keyint_min 60 -map 0:a? -map "[canvas_fusionado]" -sn -dn -pix_fmt yuv420p \
-            -c:v libx264 -preset ultrafast -tune zerolatency -b:v 2500k -maxrate 2500k -bufsize 12000k \
-            -c:a aac -b:a 128k -ac 2 -ar 44100 -f flv \
-            "rtmps://fa723fc1b171.global-contribute.live-video.net/app/sk_us-west-2_yb6F1b18xTEE_QpaA7pm407C0FAAGgZPTqZHvtIJM2Q" || true
-
-            echo "🏁 Transición de bloque detectada. Saltando de renglón..."
-            echo "$((NUM_LINEA + 1))" > linea_actual.txt
-            sleep 3
-          done
+          # =========================================================================
+          # 📡 OPERARIO 3: EL CAMARÓGRAFO AL FRENTE (FFmpeg capturando la pantalla)
+          # =========================================================================
+          # scale=1280:720 expande la pantalla gigante Full Canvas tapando bordes negros.
+          # rotate=0.012 mete el contra-copyright disimulado perfectamente en las orillas.
+          # El drawtext de abajo se grabó strictly en tus letras VERDES fluorescentes (fontcolor=0x00e676).
+          ffmpeg -y -f x11grab -video_size 1280x720 -framerate 30 -i :99.0 \
+          -f alsa -i virtual -re -loop 1 -i plantilla_horizontal.png \
+          -filter_complex "[0:v]crop=1240:620:20:20,eq=contrast=1.12:brightness=0.02,rotate=0.012:ow=1280:oh=660:fillcolor=black[peli_mutada]; \
+                           [2:v]scale=1280:720[fondo_base]; \
+                           [fondo_base][peli_mutada]overlay=0:(H-h)/2:shortest=0[canvas_parcial]; \
+                           [canvas_parcial]drawtext=textfile=letrero.txt:reload=1:x=30:y=25:fontsize=24:fontcolor=0x00e676:fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:box=1:boxcolor=black@0.6:boxborderw=5,\
+                                            drawtext=textfile=abajo.txt:reload=1:x=30:y=665:fontsize=24:fontcolor=0x00e676:fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:box=1:boxcolor=black@0.5:boxborderw=4[canvas_fusionado]" \
+          -r 30 -g 60 -keyint_min 60 -map 1:a? -map "[canvas_fusionado]" -sn -dn -pix_fmt yuv420p \
+          -c:v libx264 -preset ultrafast -tune zerolatency -b:v 2500k -maxrate 2500k -bufsize 12000k \
+          -c:a aac -b:a 128k -ac 2 -ar 44100 -f flv \
+          "rtmps://fa723fc1b171.global-contribute.live-video.net/app/sk_us-west-2_yb6F1b18xTEE_QpaA7pm407C0FAAGgZPTqZHvtIJM2Q"
