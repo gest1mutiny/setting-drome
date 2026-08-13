@@ -1,4 +1,4 @@
-name: 📡 Mutiny TV IPTV Engine v155.3 - Universal Classic Fixed
+name: 📡 Mutiny TV IPTV Engine v155.4 - Universal Classic Fixed
 
 on:
   workflow_dispatch: # Botón manual de PLAY en la web de GitHub
@@ -10,25 +10,29 @@ jobs:
       - name: 🗄️ Clonando el búnker de archivos estáticos
         uses: actions/checkout@v4
 
-      - name: ⚙️ Instalando Entorno Gráfico Virtual Invisible y FFmpeg Premium
+      - name: ⚙️ Instalando Entorno Gráfico Virtual Invisible y Servidor de Audio Premium
         run: |
           sudo apt-get update
-          sudo apt-get install -y ffmpeg fonts-dejavu-core curl xvfb mpv alsa-utils
+          # [REPARADO v155.4]: Instalamos pulseaudio y el puente nativo de sonido digital virtual
+          sudo apt-get install -y ffmpeg fonts-dejavu-core curl xvfb mpv pulseaudio alsa-utils
 
-      - name: 🚀 Detonando la Central Sincrónica Multi-Formato con Rastreo Continuo
+      - name: 🚀 Detonando la Central Sincrónica Multi-Formato con Canal de Sonido Digital
         run: |
-          # 🪓 [REACTOR INDUSTRIAL CLASSIC v155.3 - DIEGO NO-MODPROBE KERNEL FIXED]
+          # 🪓 [REACTOR INDUSTRIAL CLASSIC v155.4 - DIEGO DIGITAL AUDIO INTER-CONNECT FIXED]
           export TERM=xterm
           
           # ESCUDO DE TEXTOS MUDE INITIAL
           echo "Cargando..." > letrero.txt
           echo "Cargando informis Mutiny..." > abajo.txt
           
-          # TUS DOS GIST REALES DE TEXTO (Modificables desde el celular horizontal)
+          # Inicializamos el servidor de audio virtual Pulse en background en la RAM de la Actions
+          pulseaudio --start --exit-idle-time=-1 > /dev/null 2>&1 || true
+          
+          # TUS DOS GIST REALES DE TEXTO (Modificables desde tu celular horizontal)
           URL_GIST_TEXTO="https://gist.githubusercontent.com/jav45dev-ctrl/c02c7fac36fde342f061b733231a5e6d/raw/anuncio.txt"
           URL_GIST_NOTICIAS="https://gist.githubusercontent.com/jav45dev-ctrl/c02c7fac36fde342f061b733231a5e6d/raw/noticias.txt"
          
-          # Hilos secundarios de marquesinas dinámicas en background (Volaron los banners pesados)
+          # Hilos de marquesinas dinámicas en background
           while true; do curl -s "$URL_GIST_TEXTO" | head -n 1 | tr -d '\r\n' > letrero.txt; sleep 4; done &
           while true; do curl -s "$URL_GIST_NOTICIAS" | head -n 1 | tr -d '\r\n' > abajo.txt; sleep 5; done &
 
@@ -42,9 +46,9 @@ jobs:
           # =========================================================================
           # 🍿 OPERARIO 2: REPRODUCTOR CLÁSICO CON MEMORIA DE TIEMPO RÍGIDA (MPV)
           # =========================================================================
-          # --playlist points to your real Gist. --loop-playlist=inf guarantees auto loop.
-          # --cache=yes and --demuxer-max-bytes=500M clear all network micro-cuts.
-          # --aid=1 and --audio-channels=stereo flatten dual audio tracks instantly.
+          # --playlist apunta a tu grilla real. --loop-playlist=inf garantiza la maratón eterna.
+          # --cache=yes y --demuxer-max-bytes=500M borran los microcortes de red pirata.
+          # --aid=1 y --audio-channels=stereo aplanan mallas duales de cine a estéreo residencial de televisión.
           mpv --playlist="https://gist.githubusercontent.com/jav45dev-ctrl/c02c7fac36fde342f061b733231a5e6d/raw/playlist.txt" \
               --loop-playlist=inf --geometry=1280x660+0+30 --no-border --ontop --osc=no \
               --cache=yes --demuxer-max-bytes=500M --demuxer-max-back-bytes=50M --demuxer-readahead-secs=45 \
@@ -54,14 +58,15 @@ jobs:
           sleep 6
 
           # =========================================================================
-          # 📡 OPERARIO 3: EL CAMARÓGRAFO AL FRENTE (FFmpeg capturando la pantalla)
+          # 📡 OPERARIO 3: EL CAMARÓGRAFO AL FRENTE (FFmpeg eyejiendo a Kick)
           # =========================================================================
-          # [REPARADO v155.3]: Usamos -f alsa -i default para saltear el modprobe roto del kernel.
-          # scale=1280:720 expande la pantalla gigante Full Canvas tapando bordes negros de forma simétrica.
-          # rotate=0.012 mete el contra-copyright disimulado perfectamente en las orillas.
+          # [REPARADO v155.4]: Cambiamos el capturador por hardware -f alsa al puente digital -f pulse.
+          # Muerde el audio interno de la gatera de la RAM libre de desincronizaciones o bloqueos mudos.
+          # scale=1280:720 expande tu pantalla gigante Full Canvas tapando bordes negros horizontales.
+          # rotate=0.012 camufla el copyright de forma invisible en las orillas de la lona.
           # El drawtext de abajo se grabó strictly en tus letras VERDES fluorescentes (fontcolor=0x00e676).
           ffmpeg -y -f x11grab -video_size 1280x720 -framerate 30 -i :99.0 \
-          -f alsa -i default -re -loop 1 -i plantilla_horizontal.png \
+          -f pulse -i default -re -loop 1 -i plantilla_horizontal.png \
           -filter_complex "[0:v]crop=1240:620:20:20,eq=contrast=1.12:brightness=0.02,rotate=0.012:ow=1280:oh=660:fillcolor=black[peli_mutada]; \
                            [2:v]scale=1280:720[fondo_base]; \
                            [fondo_base][peli_mutada]overlay=0:(H-h)/2:shortest=0[canvas_parcial]; \
@@ -72,4 +77,4 @@ jobs:
           -c:a aac -b:a 128k -ac 2 -ar 44100 -f flv \
           "rtmps://fa723fc1b171.global-contribute.live-video.net/app/sk_us-west-2_yb6F1b18xTEE_QpaA7pm407C0FAAGgZPTqZHvtIJM2Q"
 
-     
+        
