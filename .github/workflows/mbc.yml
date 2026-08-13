@@ -1,4 +1,4 @@
-name: 📡 Mutiny TV IPTV Pirate Engine v615.1 - Adelantado Sincro
+name: 📡 Mutiny TV IPTV Pirate Engine v615.2 - Adelantado Sincro
 
 on:
   workflow_dispatch: # Botón manual de PLAY en la web de GitHub
@@ -17,7 +17,7 @@ jobs:
 
       - name: 🚀 Emisión Directa Unificada con Salto de Grilla Automático Indestructible
         run: |
-          # 🪓 [REACTOR CENTRAL INDUSTRIAL v615.1 - DIEGO SINCRO ADELANTO MINUTO 30]
+          # 🪓 [REACTOR CENTRAL INDUSTRIAL v615.2 - DIEGO ADELANTO LOCAL EN RAM]
           export TERM=xterm
           
           # ESCUDO DE TEXTOS MUDE INITIAL
@@ -50,17 +50,18 @@ jobs:
             echo "🍿 [MUTINY] REPRODUCIENDO RENGLÓN DE GRILLA NÚMERO: $NUM_LINEA"
             echo "🎬 Link: $URL_PIRATA"
 
-            # 🪓 [REPARADO DEFINITIVO v615.1]: Clavamos el -ss 00:30:00 como la primera directiva global del comando.
-            # Adelanta el reloj entero del sistema en la RAM, logrando la fusión perfecta a 30 FPS rígidos.
-            ffmpeg -y -ss 00:30:00 -headers "User-Agent: VLC/3.0.18 LibVLC/3.0.18" \
+            # 🪓 [REPARADO DEFINITIVO v615.2]: Volamos el rotate parásito para clavar la CPU en speed=1.05x express holgados.
+            # Movemos la orden -ss 00:30:00 estrictamente al cuello de la botella de la salida.
+            # Esto obliga a la RAM a masticar los fragmentos y soltar el fideo en Kick clavado en el minuto 30 real.
+            ffmpeg -y -headers "User-Agent: VLC/3.0.18 LibVLC/3.0.18" \
             -reconnect 1 -reconnect_at_eof 1 -reconnect_streamed 1 -reconnect_delay_max 5 \
             -fflags +genpts+igndts+flush_packets+discardcorrupt+nofillin -xerror -re -i "$URL_PIRATA" -re -loop 1 -i plantilla_horizontal.png \
-            -filter_complex "[0:v]scale=1280:720,crop=1270:710:5:5,eq=contrast=1.12:brightness=0.02,rotate=0.012:ow=1280:oh=720:fillcolor=black[peli_expandida]; \
+            -filter_complex "[0:v]scale=1280:720,crop=1270:710:5:5,eq=contrast=1.12:brightness=0.02[peli_expandida]; \
                              [1:v]scale=1280:720[fondo_base]; \
                              [fondo_base][peli_expandida]overlay=0:0:shortest=1[canvas_parcial]; \
                              [canvas_parcial]drawtext=textfile=letrero.txt:reload=1:x=30:y=25:fontsize=24:fontcolor=0x00e676:fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:box=1:boxcolor=black@0.6:boxborderw=5,\
                                               drawtext=textfile=abajo.txt:reload=1:x=30:y=665:fontsize=24:fontcolor=0x00e676:fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:box=1:boxcolor=black@0.5:boxborderw=4[canvas_fusionado]" \
-            -r 30 -g 60 -keyint_min 60 -map 0:a? -map "[canvas_fusionado]" -sn -dn -pix_fmt yuv420p \
+            -ss 00:30:00 -r 30 -g 60 -keyint_min 60 -map 0:a? -map "[canvas_fusionado]" -sn -dn -pix_fmt yuv420p \
             -c:v libx264 -preset ultrafast -tune zerolatency -b:v 2500k -maxrate 2500k -bufsize 12000k \
             -c:a aac -b:a 128k -ac 2 -ar 44100 -f flv \
             "rtmps://fa723fc1b171.global-contribute.live-video.net/app/sk_us-west-2_yb6F1b18xTEE_QpaA7pm407C0FAAGgZPTqZHvtIJM2Q" || true
@@ -69,5 +70,3 @@ jobs:
             echo "$((NUM_LINEA + 1))" > linea_actual.txt
             sleep 3
           done
-
-       
