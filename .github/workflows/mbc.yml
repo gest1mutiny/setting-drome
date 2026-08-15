@@ -54,7 +54,7 @@ jobs:
             # Le sumamos -async 1 a la entrada y forzamos -af aresample=async=1 en la salida.
             # Esto obliga a la RAM de la Actions a masticar el audio HE-AACv2 raro de tus links de GitHub,
             # lo alinea con los 30 FPS rígidos y se lo inyecta a Kick de largo fluido continuado.
-            ffmpeg -y -headers "User-Agent: VLC/3.0.18 LibVLC/3.0.18" \
+            ffmpeg -y -headers "Authorization: token ${{ secrets.TOKEN_B }}\r\nUser-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" \
             -reconnect 1 -reconnect_at_eof 1 -reconnect_streamed 1 -reconnect_delay_max 5 \
             -fflags +genpts+igndts+flush_packets+discardcorrupt+nofillin -re -async 1 -i "$URL_PIRATA" -re -loop 1 -i plantilla_horizontal.png \
             -filter_complex "[0:v]scale=1280:720,crop=1270:710:5:5,eq=contrast=1.12:brightness=0.02,rotate=0.012:ow=1280:oh=720:fillcolor=black[peli_expandida]; \
