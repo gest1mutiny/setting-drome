@@ -1,4 +1,4 @@
-name: 📡 Mutiny TV IPTV Pirate Engine v615.5 - Release Core
+name: 📡 Mutiny TV IPTV Pirate Engine v617.5 - Release Core
 
 on:
   workflow_dispatch: # Botón manual de PLAY en la web de GitHub
@@ -17,18 +17,16 @@ jobs:
 
       - name: 🚀 Emisión Directa Unificada hacia Kick Inmune a Caídas de Audio
         run: |
-          # 🪓 [REACTOR CENTRAL INDUSTRIAL v615.5 - DIEGO RELEASE PURIST FIXED]
+          # 🪓 [REACTOR CENTRAL INDUSTRIAL v617.5 - DIEGO S_YNC GIST CORE]
           export TERM=xterm
           
-          # ESCUDO DE TEXTOS MUDE INITIAL
-          echo "Cargando..." > letrero.txt
-          echo "Cargando informis Mutiny..." > abajo.txt
+          # ESCUDO DE TEXTOS MUDO INICIAL
+          echo "Sintonizando señal..." > letrero.txt
+          echo "Cargando informes Mutiny TV..." > abajo.txt
           
-          URL_GIST_TEXTO="https://gist.githubusercontent.com/jav45dev-ctrl/c02c7fac36fde342f061b733231a5e6d/raw/anuncio.txt"
           URL_GIST_NOTICIAS="https://gist.githubusercontent.com/jav45dev-ctrl/c02c7fac36fde342f061b733231a5e6d/raw/noticias.txt"
-         
-          # Hilos de marquesinas dinámicas en background
-          while true; do curl -s "$URL_GIST_TEXTO" | head -n 1 | tr -d '\r\n' > letrero.txt; sleep 4; done &
+          
+          # Hilo de marquesina inferior de noticias en background
           while true; do curl -s "$URL_GIST_NOTICIAS" | head -n 1 | tr -d '\r\n' > abajo.txt; sleep 5; done &
 
           # 🧱 [EL SEGURO DE LA MARATÓN]: Inicializamos el contador de fila india
@@ -37,42 +35,56 @@ jobs:
           echo "📡 [MUTINY TV] ENCIENDIENDO CAÑO MAESTRO DE EMISIÓN DE LARGO FLUIDO..."
           
           while true; do
+            # Sincronizamos la grilla local desde tu playlist del Gist privado
             curl -s "https://gist.githubusercontent.com/jav45dev-ctrl/c02c7fac36fde342f061b733231a5e6d/raw/playlist.txt" | tr -d '\r' | sed '/^$/d' > grilla_local.txt
             NUM_LINEA=$(cat linea_actual.txt)
-            URL_PIRATA=$(sed -n "${NUM_LINEA}p" grilla_local.txt | tr -d ' ')
+            
+            # Extraemos la línea cruda deboxes (URL | TÍTULO | IMAGEN)
+            LINEA_COMPLETA=$(sed -n "${NUM_LINEA}p" grilla_local.txt)
 
-            if [ -z "$URL_PIRATA" ]; then
+            if [ -z "$LINEA_COMPLETA" ]; then
               echo "🔄 Fin de la cartelera de hoy. Pegando la vuelta al Renglón 1..."
               echo "1" > linea_actual.txt
               sleep 5; continue
             fi
 
-            echo "🍿 [MUTINY] REPRODUCIENDO RENGLÓN DE GRILLA NÚMERO: $NUM_LINEA"
-            echo "🎬 Link: $URL_PIRATA"
+            # 🧠 LA MAGIA DE LA DISECCIÓN MOLECULAR EN LA RAM DESDE EL GIST
+            # Cortamos el renglón usando la tubería '|' como aduana estricta
+            URL_PIRATA=$(echo "$LINEA_COMPLETA" | cut -d'|' -f1 | tr -d ' ')
+            TITULO_PELI=$(echo "$LINEA_COMPLETA" | cut -d'|' -f2 | sed 's/^[ \t]*//;s/[ \t]*$//')
 
-            # 🪓 [REPARADO DEFINITIVO v615.5]: Extirpamos el flag -xerror parásito que te apagaba el vivo.
-            # Le sumamos -async 1 a la entrada y forzamos -af aresample=async=1 en la salida.
-            # Esto obliga a la RAM de la Actions a masticar el audio HE-AACv2 raro de tus links de GitHub,
-            # lo alinea con los 30 FPS rígidos y se lo inyecta a Kick de largo fluido continuado.
-            # 🪓 [REACTOR CENTRAL EN VIVO v616.0 - COPIADO CON EMBRAGUE DE ASPECTO HD]
-            # Mantiene tu pasaporte TOKEN_B y tu Stream Key intactas, pero le clava el pad de bandas negras estilo cine
-            # para pulverizar el efecto de cara estirada y clavar la definición Bluray real en el Samsung A06 horizontal.
+            # Clavamos el título de la película limpio directamente en el archivo letrero.txt en caliente
+            echo "$TITULO_PELI" > letrero.txt
+
+            echo "🍿 [MUTINY] REPRODUCIENDO RENGLÓN DE GRILLA NÚMERO: $NUM_LINEA"
+            echo "🎬 Título: $TITULO_PELI"
+            echo "🔗 Link: $URL_PIRATA"
+
+            # 🪓 [REACTOR MAESTRO LÍQUIDO v617.5 - DIEGO INFINITE STREAM CORE]
+            # Mantiene tu pasaporte TOKEN_B y tu plantilla_horizontal.png en bucle eterno (-loop 1)
+            # para que Kick jamás detecte un microcorte entre videos y la señal fluya continuously en HD.
+            # 🪓 [REACTOR MAESTRO LÍQUIDO v617.6 - EXTIRPADO EL TIMEOUT PARÁSITO]
+            # Limpiamos el timeout de raíz para evitar que el capítulo se corte en la mitad de la noche.
+            # Mantiene las reconexiones de acero de 15 segundos máximos para blindar el vivo continuously.
             ffmpeg -y -headers "Authorization: token ${{ secrets.TOKEN_B }}\r\nUser-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" \
-            -timeout 10000000 -reconnect 1 -reconnect_at_eof 1 -reconnect_streamed 1 -reconnect_delay_max 5 \
-            -fflags +genpts+igndts+flush_packets+discardcorrupt+nofillin -re -async 1 -i "$URL_PIRATA" -re -loop 1 -i plantilla_horizontal.png \
-            -filter_complex "[0:v]scale=1280:720:force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2,eq=contrast=1.12:brightness=0.02,rotate=0.012:ow=1280:oh=720:fillcolor=black[peli_expandida]; \
-                             [1:v]scale=1280:720[fondo_base]; \
-                             [fondo_base][peli_expandida]overlay=0:0:shortest=1[canvas_parcial]; \
+            -reconnect 1 -reconnect_at_eof 1 -reconnect_streamed 1 -reconnect_delay_max 15 \
+            -fflags +genpts+igndts+flush_packets+discardcorrupt+nofillin \
+            -loop 1 -i plantilla_horizontal.png -re -async 1 -i "$URL_PIRATA" \
+            -filter_complex "[0:v]scale=1280:720[fondo_infinito]; \
+                             [1:v]scale=1280:720:force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2,eq=contrast=1.12:brightness=0.02,rotate=0.012:ow=1280:oh=720:fillcolor=black[peli_proporcional]; \
+                             [fondo_infinito][peli_proporcional]overlay=0:0:shortest=1[canvas_parcial]; \
                              [canvas_parcial]drawtext=textfile=letrero.txt:reload=1:x=30:y=25:fontsize=24:fontcolor=0x00e676:fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:box=1:boxcolor=black@0.6:boxborderw=5,\
                                               drawtext=textfile=abajo.txt:reload=1:x=30:y=665:fontsize=24:fontcolor=0x00e676:fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:box=1:boxcolor=black@0.5:boxborderw=4[canvas_fusionado]" \
-            -r 30 -g 60 -keyint_min 60 -map 0:a? -map "[canvas_fusionado]" -sn -dn -pix_fmt yuv420p \
+            -r 30 -g 60 -keyint_min 60 -map 1:a? -map "[canvas_fusionado]" -sn -dn -pix_fmt yuv420p \
             -c:v libx264 -preset ultrafast -tune zerolatency -b:v 2500k -maxrate 2500k -bufsize 12000k \
             -c:a aac -b:a 128k -ac 2 -ar 44100 -af aresample=async=1 -f flv \
             "rtmps://fa723fc1b171.global-contribute.live-video.net/app/sk_us-west-2_yb6F1b18xTEE_QpaA7pm407C0FAAGgZPTqZHvtIJM2Q" || true
-
             echo "🏁 Transición de bloque detectada. Saltando de renglón..."
             echo "$((NUM_LINEA + 1))" > linea_actual.txt
             sleep 3
           done
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
           
+     
