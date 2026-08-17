@@ -1,4 +1,4 @@
-name: 📡 Mutiny TV IPTV Pirate Engine v617.8 - Release Core
+name: 📡 Mutiny TV IPTV Pirate Engine v615.5 - Release Core
 
 on:
   workflow_dispatch: # Botón manual de PLAY en la web de GitHub
@@ -17,16 +17,16 @@ jobs:
 
       - name: 🚀 Emisión Directa Unificada hacia Kick Inmune a Caídas de Audio
         run: |
-          # 🪓 [REACTOR CENTRAL INDUSTRIAL v617.8 - DIEGO ORIGINAL S_YNC CORE]
+          # 🪓 [REACTOR CENTRAL INDUSTRIAL v615.5 - DIEGO RELEASE PURIST FIXED]
           export TERM=xterm
           
           # ESCUDO DE TEXTOS MUDO INICIAL
-          echo "Sintonizando señal..." > letrero.txt
-          echo "Cargando informes Mutiny TV..." > abajo.txt
+          echo "Cargando..." > letrero.txt
+          echo "Cargando informes Mutiny..." > abajo.txt
           
           URL_GIST_NOTICIAS="https://gist.githubusercontent.com/jav45dev-ctrl/c02c7fac36fde342f061b733231a5e6d/raw/noticias.txt"
-          
-          # Hilo de marquesina inferior de noticias en background
+         
+          # Hilo de la marquesina inferior de noticias en background intacto
           while true; do curl -s "$URL_GIST_NOTICIAS" | head -n 1 | tr -d '\r\n' > abajo.txt; sleep 5; done &
 
           # 🧱 [EL SEGURO DE LA MARATÓN]: Inicializamos el contador de fila india
@@ -35,38 +35,38 @@ jobs:
           echo "📡 [MUTINY TV] ENCIENDIENDO CAÑO MAESTRO DE EMISIÓN DE LARGO FLUIDO..."
           
           while true; do
-            # Sincronizamos la grilla local desde tu playlist del Gist privado
+            # Descargamos tu playlist unificada del Gist privado
             curl -s "https://gist.githubusercontent.com/jav45dev-ctrl/c02c7fac36fde342f061b733231a5e6d/raw/playlist.txt" | tr -d '\r' | sed '/^$/d' > grilla_local.txt
             NUM_LINEA=$(cat linea_actual.txt)
             
-            # Extraemos la línea cruda deboxes (URL | TÍTULO | IMAGEN)
-            LINEA_COMPLETA=$(sed -n "${NUM_LINEA}p" grilla_local.txt)
+            # Capturamos la línea completa rígida del casillero correspondiente (URL | TITULO)
+            LINEA_CRUDA=$(sed -n "${NUM_LINEA}p" grilla_local.txt)
 
-            if [ -z "$LINEA_COMPLETA" ]; then
+            if [ -z "$LINEA_CRUDA" ]; then
               echo "🔄 Fin de la cartelera de hoy. Pegando la vuelta al Renglón 1..."
               echo "1" > linea_actual.txt
               sleep 5; continue
             fi
 
-            # 🧠 LA MAGIA DE LA DISECCIÓN MOLECULAR EN LA RAM DESDE EL GIST
-            URL_PIRATA=$(echo "$LINEA_COMPLETA" | cut -d'|' -f1 | tr -d ' ')
-            TITULO_PELI=$(echo "$LINEA_COMPLETA" | cut -d'|' -f2 | sed 's/^[ \t]*//;s/[ \t]*$//')
+            # 🛠️ DISECCIÓN AUTOMÁTICA DETECTOR DE TÍTULOS DEBOXES
+            # Usamos awk para escupir la URL limpia eliminando espacios
+            URL_PIRATA=$(echo "$LINEA_CRUDA" | awk -F'|' '{print $1}' | tr -d ' ')
+            # Usamos sed para limpiar los espacios sobrantes de las puntas del título
+            TITULO_LETRERO=$(echo "$LINEA_CRUDA" | awk -F'|' '{print $2}' | sed 's/^[ \t]*//;s/[ \t]*$//')
 
-            # Clavamos el título de la película limpio directamente en el archivo letrero.txt en caliente
-            echo "$TITULO_PELI" > letrero.txt
+            # Inyectamos de forma síncrona el título adentro del archivo letrero.txt
+            echo "$TITULO_LETRERO" > letrero.txt
 
             echo "🍿 [MUTINY] REPRODUCIENDO RENGLÓN DE GRILLA NÚMERO: $NUM_LINEA"
-            echo "🎬 Título: $TITULO_PELI"
+            echo "🎬 Título Letrero: $TITULO_LETRERO"
             echo "🔗 Link: $URL_PIRATA"
 
-            # 🪓 [REPARADO DEFINITIVO v617.8 - EL RETORNO DE LA ESTRUCTURA ORIGINAL SANA]
-            # 1. Mantiene EXACTAMENTE tu orden viejo (Video -i primero, plantilla -i después) para que no crashee jamás.
-            # 2. EXTIRPADO EL TIMEOUT PARÁSITO: Solo dejamos las reconexiones de acero a 15s para blindar el fideo.
-            # 3. ESCALADOR ANTI-ESTIRAMIENTO: Clava force_original_aspect_ratio y pad de bandas negras perfectas estilo cine.
+            # 🪓 TU COMANDO ORIGINAL SANO: Con el video primero y la plantilla atrás para que no crashee
+            # Mantiene intacto el timeout y los filtros de escala con crop que a vos te gustan deboxes.
             ffmpeg -y -headers "Authorization: token ${{ secrets.TOKEN_B }}\r\nUser-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" \
-            -reconnect 1 -reconnect_at_eof 1 -reconnect_streamed 1 -reconnect_delay_max 15 \
+            -timeout 10000000 -reconnect 1 -reconnect_at_eof 1 -reconnect_streamed 1 -reconnect_delay_max 5 \
             -fflags +genpts+igndts+flush_packets+discardcorrupt+nofillin -re -async 1 -i "$URL_PIRATA" -re -loop 1 -i plantilla_horizontal.png \
-            -filter_complex "[0:v]scale=1280:720:force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2,eq=contrast=1.12:brightness=0.02,rotate=0.012:ow=1280:oh=720:fillcolor=black[peli_expandida]; \
+            -filter_complex "[0:v]scale=1280:720,crop=1270:710:5:5,eq=contrast=1.12:brightness=0.02,rotate=0.012:ow=1280:oh=720:fillcolor=black[peli_expandida]; \
                              [1:v]scale=1280:720[fondo_base]; \
                              [fondo_base][peli_expandida]overlay=0:0:shortest=1[canvas_parcial]; \
                              [canvas_parcial]drawtext=textfile=letrero.txt:reload=1:x=30:y=25:fontsize=24:fontcolor=0x00e676:fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:box=1:boxcolor=black@0.6:boxborderw=5,\
