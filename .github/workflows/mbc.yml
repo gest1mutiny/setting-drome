@@ -22,6 +22,8 @@ jobs:
           
           # ESCUDO DE TEXTOS MUDO INICIAL
           echo "Cargando..." > letrero.txt
+          echo "$NUM_LINEA" > abajo.txt
+
           echo "Cargando informes Mutiny..." > abajo.txt
           
           URL_GIST_NOTICIAS="https://gist.githubusercontent.com/jav45dev-ctrl/c02c7fac36fde342f061b733231a5e6d/raw/noticias.txt"
