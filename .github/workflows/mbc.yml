@@ -66,10 +66,14 @@ jobs:
             # 🪓 [REACTOR MAESTRO LÍQUIDO v617.6 - EXTIRPADO EL TIMEOUT PARÁSITO]
             # Limpiamos el timeout de raíz para evitar que el capítulo se corte en la mitad de la noche.
             # Mantiene las reconexiones de acero de 15 segundos máximos para blindar el vivo continuously.
-            ffmpeg -y -headers "Authorization: token ${{ secrets.TOKEN_B }}\r\nUser-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" \
-            -reconnect 1 -reconnect_at_eof 1 -reconnect_streamed 1 -reconnect_delay_max 15 \
+            # 🪓 [REACTOR CENTRAL INDUSTRIAL v617.7 - DIEGO LIQUID S_YNC RECTIFIED]
+            # Ponemos los -headers strictly adelante de la URL de internet ($URL_PIRATA) para que no choque contra la imagen local.
+            # Ordenamos los mapas [0:v] y [1:v] para que la plantilla sostenga el vivo sin microcortes de piloto automático real.
+            ffmpeg -y -reconnect 1 -reconnect_at_eof 1 -reconnect_streamed 1 -reconnect_delay_max 15 \
             -fflags +genpts+igndts+flush_packets+discardcorrupt+nofillin \
-            -loop 1 -i plantilla_horizontal.png -re -async 1 -i "$URL_PIRATA" \
+            -loop 1 -i plantilla_horizontal.png \
+            -headers "Authorization: token ${{ secrets.TOKEN_B }}\r\nUser-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" \
+            -re -async 1 -i "$URL_PIRATA" \
             -filter_complex "[0:v]scale=1280:720[fondo_infinito]; \
                              [1:v]scale=1280:720:force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2,eq=contrast=1.12:brightness=0.02,rotate=0.012:ow=1280:oh=720:fillcolor=black[peli_proporcional]; \
                              [fondo_infinito][peli_proporcional]overlay=0:0:shortest=1[canvas_parcial]; \
@@ -79,6 +83,7 @@ jobs:
             -c:v libx264 -preset ultrafast -tune zerolatency -b:v 2500k -maxrate 2500k -bufsize 12000k \
             -c:a aac -b:a 128k -ac 2 -ar 44100 -af aresample=async=1 -f flv \
             "rtmps://fa723fc1b171.global-contribute.live-video.net/app/sk_us-west-2_yb6F1b18xTEE_QpaA7pm407C0FAAGgZPTqZHvtIJM2Q" || true
+
             echo "🏁 Transición de bloque detectada. Saltando de renglón..."
             echo "$((NUM_LINEA + 1))" > linea_actual.txt
             sleep 3
