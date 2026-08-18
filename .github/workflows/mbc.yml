@@ -66,7 +66,7 @@ jobs:
             # 🪓 TU COMANDO ORIGINAL SANO: Con el video primero y la plantilla atrás para que no crashee
             # Mantiene intacto el timeout y los filtros de escala con crop que a vos te gustan deboxes.
             # 🪓 [REPARADO DEFINITIVO v615.5 - SIN TIMEOUT ANTI-SALTOS]
-            ffmpeg -y -headers "Authorization: token ${{ secrets.TOKEN_B }}\r\nUser-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" \
+            ffmpeg -y -headers "User-Agent: VLC/3.0.18 LibVLC/3.0.18" \ "Authorization: token ${{ secrets.TOKEN_B }}\r\nUser-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" \
             -reconnect 1 -reconnect_at_eof 1 -reconnect_streamed 1 -reconnect_delay_max 15 \
             -fflags +genpts+igndts+flush_packets+discardcorrupt+nofillin -re -async 1 -i "$URL_PIRATA" -re -loop 1 -i plantilla_horizontal.png \
             -filter_complex "[0:v]scale=1280:720,crop=1270:710:5:5,eq=contrast=1.12:brightness=0.02,rotate=0.012:ow=1280:oh=720:fillcolor=black[peli_expandida]; \
