@@ -1,4 +1,4 @@
-name: 📡 Mutiny TV IPTV Pirate Engine v700.4 - Continuous Core
+name: 📡 Mutiny TV IPTV Pirate Engine v705 - Chessmaster Core
 
 on:
   workflow_dispatch: # Botón manual de PLAY en la web de GitHub
@@ -17,7 +17,7 @@ jobs:
 
       - name: 🚀 Emisión Directa Unificada hacia Kick Inmune a Caídas de Audio
         run: |
-          # 🪓 [REACTOR CENTRAL INDUSTRIAL v700.4 - DIEGO CONTINUOUS HEADERS ORDER FIXED]
+          # 🪓 [REACTOR CENTRAL INDUSTRIAL v705 - DIEGO CHESSMASTER CORE FIXED]
           export TERM=xterm
           
           echo "Cargando..." > letrero.txt
@@ -29,39 +29,29 @@ jobs:
           # Hilo de la marquesina inferior de noticias en background intacto
           while true; do curl -s "$URL_GIST_NOTICIAS" | head -n 1 | tr -d '\r\n' > abajo.txt; sleep 5; done &
 
-          echo "📡 [MUTINY TV] SUCCIONANDO GRILLA DESDE EL COFRE SEGURO..."
+          echo "📡 [MUTINY TV] SUCCIONANDO GRILLA CON SINTAXIS FILE DIRECTA..."
           
-          # 1. Chupamos tu playlist del Gist saltando aduanas
-          curl -L -s "$URL_GIST_PLAYLIST" | tr -d '\r' | sed '/^$/d' > grilla_cruda.txt
+          # 1. Chupamos tu playlist estructurada del Gist y la guardamos limpia en el disco local
+          # Esto te genera el archivo 'playlist_local.txt' que FFmpeg lee directo sin bucles parásitos
+          curl -L -s "$URL_GIST_PLAYLIST" | tr -d '\r' | sed '/^$/d' > playlist_local.txt
           sleep 2
 
-          # Inicializamos el bloc de notas local de forma rígida
-          echo "# Lista de videos para concat" > playlist_local.txt
-          
-          # 2. El bucle extractor: fabricamos la lista de concatenación nativa en la RAM
-          while read -r linea || [ -n "$linea" ]; do
-            URL_PIRATA=$(echo "$linea" | awk -F'|' '{print $1}' | tr -d ' ')
-            if [ -n "$URL_PIRATA" ]; then
-              echo "file '$URL_PIRATA'" >> playlist_local.txt
-            fi
-          done < grilla_cruda.txt
-
           echo "🪓 [MUTINY] DETECTANDO PRIMER TÍTULO DE MARATÓN..."
-          PRIMERA_LINEA=$(head -n 1 grilla_cruda.txt)
+          PRIMERA_LINEA=$(head -n 1 playlist_local.txt)
           TITULO_INICIAL=$(echo "$PRIMERA_LINEA" | awk -F'|' '{print $2}' | sed 's/^[ \t]*//;s/[ \t]*$//')
           echo "${TITULO_INICIAL:-🟢 Maratón Continuo Mutiny TV}" > letrero.txt
 
-          echo "🪓 [MUTINY] COMPROBANDO LA CAÑERÍA SOBERANA CONTINUA:"
+          echo "🪓 [MUTINY] COMPROBANDO LA CAÑERÍA EN EL DISPLAY:"
           cat playlist_local.txt
 
           echo "📡 [MUTINY TV] ENCIENDIENDO CAÑO MAESTRO DE EMISIÓN DE LARGO FLUIDO ETERNO..."
           
-          # 3. EL REMACHE MAESTRO RE-ORDENADO DEBOXES:
-          # [REPARADO v700.4]: Pasamos los flags de reconexión y las cabeceras pegados estrictamente
-          # antes del input de la lista local. Esto pulveriza el error "Option headers not found".
-          # Mantiene intactos tus contrastes, el crop, tu drawtext y tu Stream Key de Kick legítima.
+          # 3. JAQUE MATE DE TITANIO DIEGO CORE:
+          # Volamos los flags -reconnect locales del input que te daban portazo.
+          # Agregamos -protocol_whitelist "file,http,https,tcp,tls,crypto,data" al arranque.
+          # Pasamos tus cabeceras secretas AUTHORIZATION con TOKEN_B y VLC pegadas rígidas.
+          # Mantiene intactos tus contrastes, el crop, tu drawtext y tu Stream Key de Kick.
           ffmpeg -y \
-            -reconnect 1 -reconnect_at_eof 1 -reconnect_streamed 1 -reconnect_delay_max 5 \
             -fflags +genpts+igndts+flush_packets+discardcorrupt+nofillin -re -async 1 \
             -protocol_whitelist "file,http,https,tcp,tls,crypto,data" \
             -f concat -safe 0 \
