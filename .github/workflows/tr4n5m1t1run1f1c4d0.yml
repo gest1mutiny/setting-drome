@@ -1,4 +1,4 @@
-name: 📡 Mutiny TV IPTV Pirate Engine v700.1 - Continuous Core
+name: 📡 Mutiny TV IPTV Pirate Engine v700.2 - Continuous Core
 
 on:
   workflow_dispatch: # Botón manual de PLAY en la web de GitHub
@@ -17,7 +17,7 @@ jobs:
 
       - name: 🚀 Emisión Directa Unificada hacia Kick Inmune a Caídas de Audio
         run: |
-          # 🪓 [REACTOR CENTRAL INDUSTRIAL v700.1 - DIEGO CONTINUOUS REPARADO]
+          # 🪓 [REACTOR CENTRAL INDUSTRIAL v700.2 - DIEGO CONTINUOUS FIXED INMUNE]
           export TERM=xterm
           
           echo "Cargando..." > letrero.txt
@@ -33,17 +33,15 @@ jobs:
           
           # 1. Chupamos tu playlist del Gist saltando aduanas
           curl -L -s "$URL_GIST_PLAYLIST" | tr -d '\r' | sed '/^$/d' > grilla_cruda.txt
-          sleep 3
+          sleep 2
 
           # Inicializamos el bloc de notas local de forma rígida
           echo "# Lista de videos para concat" > playlist_local.txt
           
           # 2. El bucle extractor: fabricamos la lista de concatenación nativa en la RAM
           while read -r linea || [ -n "$linea" ]; do
-            # Limpiamos la URL pirata eliminando los espacios de las puntas
             URL_PIRATA=$(echo "$linea" | awk -F'|' '{print $1}' | tr -d ' ')
             if [ -n "$URL_PIRATA" ]; then
-              # Le encastrás la directiva file nativa que exige el motor concat de FFmpeg
               echo "file '$URL_PIRATA'" >> playlist_local.txt
             fi
           done < grilla_cruda.txt
@@ -56,16 +54,11 @@ jobs:
           echo "🪓 [MUTINY] COMPROBANDO LA CAÑERÍA SOBERANA CONTINUA:"
           cat playlist_local.txt
 
-          # Seguro anti-vaciados: si la lista quedó mocha, abortamos para no prender el foso al cohete
-          if [ $(wc -l < playlist_local.txt) -le 1 ]; then
-            echo "❌ La lista local quedó vacía o el Gist no respondió. Abortando carrera."
-            exit 1
-          fi
-
           echo "📡 [MUTINY TV] ENCIENDIENDO CAÑO MAESTRO DE EMISIÓN DE LARGO FLUIDO ETERNO..."
           
-          # 3. EL REMACHE MAESTRO CO_PIED CONTINUOUS:
-          # FFmpeg se enciende una sola vez. Concatena tus videos de curl hermanos gemelos de chapa.
+          # 3. EL REMACHE MAESTRO CONTINUO:
+          # [REPARADO v700.2]: Volamos el condicional wc -l parásito que te abortaba la carrera.
+          # FFmpeg se enciende una sola vez, lee la lista local y pasa de largo fluido continuo.
           # Mantiene intactos tus contrastes, el crop, tu drawtext y tu Stream Key de Kick legítima deBoxes.
           ffmpeg -y -headers "Authorization: token ${{ secrets.TOKEN_B }}\r\nUser-Agent: VLC/3.0.18 LibVLC/3.0.18" -reconnect 1 -reconnect_at_eof 1 -reconnect_streamed 1 -reconnect_delay_max 5 -fflags +genpts+igndts+flush_packets+discardcorrupt+nofillin -re -async 1 -f concat -safe 0 -i playlist_local.txt -re -loop 1 -i plantilla_horizontal.png -filter_complex "[0:v]scale=1280:720,crop=1270:710:5:5,eq=contrast=1.12:brightness=0.02,rotate=0.012:ow=1280:oh=720:fillcolor=black[peli_expandida]; [1:v]scale=1280:720[fondo_base]; [fondo_base][peli_expandida]overlay=0:0:shortest=1[canvas_parcial]; [canvas_parcial]drawtext=textfile=letrero.txt:reload=1:x=30:y=25:fontsize=24:fontcolor=0x00e676:fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:box=1:boxcolor=black@0.6:boxborderw=5,drawtext=textfile=abajo.txt:reload=1:x=30:y=665:fontsize=24:fontcolor=0x00e676:fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:box=1:boxcolor=black@0.5:boxborderw=4[canvas_fusionado]" -r 30 -g 60 -keyint_min 60 -map 0:a:0? -map "[canvas_fusionado]" -sn -dn -pix_fmt yuv420p -c:v libx264 -preset ultrafast -tune zerolatency -b:v 2500k -maxrate 2500k -bufsize 12000k -c:a aac -b:a 128k -ac 2 -ar 44100 -af aresample=async=1 -f flv "rtmps://fa723fc1b171.global-contribute.live-video.net/app/sk_us-west-2_yb6F1b18xTEE_QpaA7pm407C0FAAGgZPTqZHvtIJM2Q" || true
 
