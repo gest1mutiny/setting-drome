@@ -1,4 +1,4 @@
-name: 📡 Mutiny TV IPTV Pirate Engine v700.3 - Continuous Core
+name: 📡 Mutiny TV IPTV Pirate Engine v700.4 - Continuous Core
 
 on:
   workflow_dispatch: # Botón manual de PLAY en la web de GitHub
@@ -17,7 +17,7 @@ jobs:
 
       - name: 🚀 Emisión Directa Unificada hacia Kick Inmune a Caídas de Audio
         run: |
-          # 🪓 [REACTOR CENTRAL INDUSTRIAL v700.3 - DIEGO CONTINUOUS WHITELIST FIXED]
+          # 🪓 [REACTOR CENTRAL INDUSTRIAL v700.4 - DIEGO CONTINUOUS HEADERS ORDER FIXED]
           export TERM=xterm
           
           echo "Cargando..." > letrero.txt
@@ -56,14 +56,26 @@ jobs:
 
           echo "📡 [MUTINY TV] ENCIENDIENDO CAÑO MAESTRO DE EMISIÓN DE LARGO FLUIDO ETERNO..."
           
-          # 3. EL REMACHE MAESTRO CONTINUO:
-          # [REPARADO v700.3]: Inyectamos -protocol_whitelist para autorizar la lectura de URLs https adentro del concat.
-          # FFmpeg se enciende una sola vez, lee tu lista local de internet y pasa de largo fluido continuado.
-          # Mantiene intactos tus contrastes, el crop, tu drawtext y tu Stream Key de Kick deBoxes.
-          ffmpeg -y -headers "Authorization: token ${{ secrets.TOKEN_B }}\r\nUser-Agent: VLC/3.0.18 LibVLC/3.0.18" -reconnect 1 -reconnect_at_eof 1 -reconnect_streamed 1 -reconnect_delay_max 5 -fflags +genpts+igndts+flush_packets+discardcorrupt+nofillin -re -async 1 -protocol_whitelist "file,http,https,tcp,tls,crypto,data" -f concat -safe 0 -i playlist_local.txt -re -loop 1 -i plantilla_horizontal.png -filter_complex "[0:v]scale=1280:720,crop=1270:710:5:5,eq=contrast=1.12:brightness=0.02,rotate=0.012:ow=1280:oh=720:fillcolor=black[peli_expandida]; [1:v]scale=1280:720[fondo_base]; [fondo_base][peli_expandida]overlay=0:0:shortest=1[canvas_parcial]; [canvas_parcial]drawtext=textfile=letrero.txt:reload=1:x=30:y=25:fontsize=24:fontcolor=0x00e676:fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:box=1:boxcolor=black@0.6:boxborderw=5,drawtext=textfile=abajo.txt:reload=1:x=30:y=665:fontsize=24:fontcolor=0x00e676:fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:box=1:boxcolor=black@0.5:boxborderw=4[canvas_fusionado]" -r 30 -g 60 -keyint_min 60 -map 0:a:0? -map "[canvas_fusionado]" -sn -dn -pix_fmt yuv420p -c:v libx264 -preset ultrafast -tune zerolatency -b:v 2500k -maxrate 2500k -bufsize 12000k -c:a aac -b:a 128k -ac 2 -ar 44100 -af aresample=async=1 -f flv "rtmps://fa723fc1b171.global-contribute.live-video.net/app/sk_us-west-2_yb6F1b18xTEE_QpaA7pm407C0FAAGgZPTqZHvtIJM2Q" || true
+          # 3. EL REMACHE MAESTRO RE-ORDENADO DEBOXES:
+          # [REPARADO v700.4]: Pasamos los flags de reconexión y las cabeceras pegados estrictamente
+          # antes del input de la lista local. Esto pulveriza el error "Option headers not found".
+          # Mantiene intactos tus contrastes, el crop, tu drawtext y tu Stream Key de Kick legítima.
+          ffmpeg -y \
+            -reconnect 1 -reconnect_at_eof 1 -reconnect_streamed 1 -reconnect_delay_max 5 \
+            -fflags +genpts+igndts+flush_packets+discardcorrupt+nofillin -re -async 1 \
+            -protocol_whitelist "file,http,https,tcp,tls,crypto,data" \
+            -f concat -safe 0 \
+            -headers "Authorization: token ${{ secrets.TOKEN_B }}\r\nUser-Agent: VLC/3.0.18 LibVLC/3.0.18" \
+            -i playlist_local.txt \
+            -re -loop 1 -i plantilla_horizontal.png \
+            -filter_complex "[0:v]scale=1280:720,crop=1270:710:5:5,eq=contrast=1.12:brightness=0.02,rotate=0.012:ow=1280:oh=720:fillcolor=black[peli_expandida]; [1:v]scale=1280:720[fondo_base]; [fondo_base][peli_expandida]overlay=0:0:shortest=1[canvas_parcial]; [canvas_parcial]drawtext=textfile=letrero.txt:reload=1:x=30:y=25:fontsize=24:fontcolor=0x00e676:fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:box=1:boxcolor=black@0.6:boxborderw=5,drawtext=textfile=abajo.txt:reload=1:x=30:y=665:fontsize=24:fontcolor=0x00e676:fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:box=1:boxcolor=black@0.5:boxborderw=4[canvas_fusionado]" \
+            -r 30 -g 60 -keyint_min 60 -map 0:a:0? -map "[canvas_fusionado]" -sn -dn -pix_fmt yuv420p \
+            -c:v libx264 -preset ultrafast -tune zerolatency -b:v 2500k -maxrate 2500k -bufsize 12000k \
+            -c:a aac -b:a 128k -ac 2 -ar 44100 -af aresample=async=1 \
+            -f flv "rtmps://fa723fc1b171.global-contribute.live-video.net/app/sk_us-west-2_yb6F1b18xTEE_QpaA7pm407C0FAAGgZPTqZHvtIJM2Q" || true
 
           echo "🏁 La maratón ha finalizado de largo fluido. Satélite apagado."
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-     
+         
