@@ -1,4 +1,4 @@
-name: 📡 Mutiny TV IPTV Pirate Engine v705 - Chessmaster Core
+name: 📡 Mutiny TV IPTV Pirate Engine v710 - Chessmaster Core
 
 on:
   workflow_dispatch: # Botón manual de PLAY en la web de GitHub
@@ -17,7 +17,7 @@ jobs:
 
       - name: 🚀 Emisión Directa Unificada hacia Kick Inmune a Caídas de Audio
         run: |
-          # 🪓 [REACTOR CENTRAL INDUSTRIAL v705 - DIEGO CHESSMASTER CORE FIXED]
+          # 🪓 [REACTOR CENTRAL INDUSTRIAL v710 - DIEGO LOCALIZED CONCAT CORE]
           export TERM=xterm
           
           echo "Cargando..." > letrero.txt
@@ -29,33 +29,51 @@ jobs:
           # Hilo de la marquesina inferior de noticias en background intacto
           while true; do curl -s "$URL_GIST_NOTICIAS" | head -n 1 | tr -d '\r\n' > abajo.txt; sleep 5; done &
 
-          echo "📡 [MUTINY TV] SUCCIONANDO GRILLA CON SINTAXIS FILE DIRECTA..."
+          echo "📡 [MUTINY TV] SUCCIONANDO GRILLA PARA DESCARGA LOCAL..."
           
-          # 1. Chupamos tu playlist estructurada del Gist y la guardamos limpia en el disco local
-          # Esto te genera el archivo 'playlist_local.txt' que FFmpeg lee directo sin bucles parásitos
-          curl -L -s "$URL_GIST_PLAYLIST" | tr -d '\r' | sed '/^$/d' > playlist_local.txt
-          sleep 2
+          # 1. Chupamos tu playlist del Gist privado
+          curl -L -s "$URL_GIST_PLAYLIST" | tr -d '\r' | sed '/^$/d' > grilla_cruda.txt
+          
+          # Inicializamos la lista de reproducción local pura
+          echo "# Lista de videos locales para concat" > playlist_local.txt
+          
+          contador=1
+          
+          # 2. EL EMBRAGUE SATELITAL: Descargamos tus fideos idénticos del Ladrón al disco virtual a 100 MB/s
+          while read -r linea || [ -n "$linea" ]; do
+            # Limpiamos la URL de internet eliminando espacios parásitos
+            URL_INTERNET=$(echo "$linea" | awk -F'|' '{print $1}' | tr -d ' ')
+            
+            if [ -n "$URL_INTERNET" ]; then
+              echo "📥 Pre-descargando Tramo $contador de internet a la RAM: $URL_INTERNET"
+              
+              # Succiona el video saltando aduanas de GitHub con tu pasaporte TOKEN_B intacto
+              curl -L -H "Authorization: token ${{ secrets.TOKEN_B }}" \
+                   -H "User-Agent: VLC/3.0.18 LibVLC/3.0.18" \
+                   -o "local_part_${contador}.mp4" "$URL_INTERNET"
+              
+              # Le encastramos strictly el archivo local al bloc de notas
+              echo "file 'local_part_${contador}.mp4'" >> playlist_local.txt
+              contador=$((contador + 1))
+            fi
+          done < grilla_cruda.txt
 
           echo "🪓 [MUTINY] DETECTANDO PRIMER TÍTULO DE MARATÓN..."
-          PRIMERA_LINEA=$(head -n 1 playlist_local.txt)
+          PRIMERA_LINEA=$(head -n 1 grilla_cruda.txt)
           TITULO_INICIAL=$(echo "$PRIMERA_LINEA" | awk -F'|' '{print $2}' | sed 's/^[ \t]*//;s/[ \t]*$//')
           echo "${TITULO_INICIAL:-🟢 Maratón Continuo Mutiny TV}" > letrero.txt
 
-          echo "🪓 [MUTINY] COMPROBANDO LA CAÑERÍA EN EL DISPLAY:"
+          echo "🪓 [MUTINY] COMPROBANDO LA CAÑERÍA LOCAL RE-DIRECCIONADA:"
           cat playlist_local.txt
 
           echo "📡 [MUTINY TV] ENCIENDIENDO CAÑO MAESTRO DE EMISIÓN DE LARGO FLUIDO ETERNO..."
           
-          # 3. JAQUE MATE DE TITANIO DIEGO CORE:
-          # Volamos los flags -reconnect locales del input que te daban portazo.
-          # Agregamos -protocol_whitelist "file,http,https,tcp,tls,crypto,data" al arranque.
-          # Pasamos tus cabeceras secretas AUTHORIZATION con TOKEN_B y VLC pegadas rígidas.
-          # Mantiene intactos tus contrastes, el crop, tu drawtext y tu Stream Key de Kick.
+          # 3. EL REMACHE DEF_INITIVO: FFmpeg corre en frío sobre archivos locales puros.
+          # Volamos los flags cruzados -headers y -reconnect que te daban portazo en la nuca.
+          # Mantiene intactos tus contrastes, el crop, tu drawtext y tu Stream Key de Kick de Boxes.
           ffmpeg -y \
             -fflags +genpts+igndts+flush_packets+discardcorrupt+nofillin -re -async 1 \
-            -protocol_whitelist "file,http,https,tcp,tls,crypto,data" \
             -f concat -safe 0 \
-            -headers "Authorization: token ${{ secrets.TOKEN_B }}\r\nUser-Agent: VLC/3.0.18 LibVLC/3.0.18" \
             -i playlist_local.txt \
             -re -loop 1 -i plantilla_horizontal.png \
             -filter_complex "[0:v]scale=1280:720,crop=1270:710:5:5,eq=contrast=1.12:brightness=0.02,rotate=0.012:ow=1280:oh=720:fillcolor=black[peli_expandida]; [1:v]scale=1280:720[fondo_base]; [fondo_base][peli_expandida]overlay=0:0:shortest=1[canvas_parcial]; [canvas_parcial]drawtext=textfile=letrero.txt:reload=1:x=30:y=25:fontsize=24:fontcolor=0x00e676:fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:box=1:boxcolor=black@0.6:boxborderw=5,drawtext=textfile=abajo.txt:reload=1:x=30:y=665:fontsize=24:fontcolor=0x00e676:fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:box=1:boxcolor=black@0.5:boxborderw=4[canvas_fusionado]" \
@@ -68,4 +86,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-         
+      
